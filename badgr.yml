@@ -140,7 +140,7 @@ objects:
       CELERY_RESULT_BACKEND = None
       CELERY_ALWAYS_EAGER = True
 
-      HTTP_ORIGIN = 'http://localhost:8000'
+      HTTP_ORIGIN = os.environ['SITE_URL']
 
       # Optionally restrict issuer creation to accounts that have the 'issuer.add_issuer' permission
       BADGR_APPROVED_ISSUERS_ONLY = False
