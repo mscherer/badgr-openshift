@@ -27,6 +27,7 @@ objects:
     database-root-password: ${DATABASE_ROOT_PASSWORD}
     database-user: ${DATABASE_USER}
     django-secret-key: ${DJANGO_SECRET_KEY}
+    unsubscribe-key: ${UNSUBSCRIBE_KEY}
 
 - apiVersion: v1
   kind: Service
@@ -102,7 +103,8 @@ objects:
       LANGUAGE_CODE = 'en-us'
 
 
-      UNSUBSCRIBE_KEY = SECRET_KEY = os.environ['SECRET_KEY']
+      UNSUBSCRIBE_KEY = os.environ['UNSUBSCRIBE_KEY']
+      SECRET_KEY = os.environ['SECRET_KEY']
       INTERNAL_IPS = '127.0.0.1'
       ALLOWED_HOSTS = '*'
 
@@ -285,6 +287,11 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: django-secret-key
+                name: ${NAME}
+          - name: UNSUBSCRIBE_KEY
+            valueFrom:
+              secretKeyRef:
+                key: unsubscribe-key
                 name: ${NAME}
           image: ' '
           livenessProbe:
@@ -514,6 +521,12 @@ parameters:
   from: '[\w]{50}'
   generate: expression
   name: DJANGO_SECRET_KEY
+
+- description: Set this to a long random string.
+  displayName: Badgr unsubscribe key
+  from: '[\w]{50}'
+  generate: expression
+  name: UNSUBSCRIBE_KEY
 
 - description: Volume space available for badgr data, e.g. 512Mi, 2Gi.
   displayName: Badgr data volume capacity
